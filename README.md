@@ -40,6 +40,14 @@ React frontend -> FastAPI backend -> PostgreSQL -> FYERS data ingestion -> Signa
 
 <!-- Add dashboard screenshot here -->
 
+## Contributing
+
+Please review CONTRIBUTING.md before opening a pull request.
+
+## License
+
+This project is licensed under the MIT License. See LICENSE for details.
+
 ## Proprietary Notice
 
 The signal computation layer is proprietary and is not included in this repository. Any routes that depend on internal analytics engines are intentionally represented as public API contracts only.

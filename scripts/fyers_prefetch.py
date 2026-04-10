@@ -6,17 +6,17 @@ Claude's analysis and OI skills read these files automatically.
 
 Usage:
   # Fetch price data (for /analysis and /post)
-  python /Users/iayusshh/claude/fyers_prefetch.py NSE:NIFTY50-INDEX
-  python /Users/iayusshh/claude/fyers_prefetch.py NSE:RELIANCE-EQ
+    python scripts/fyers_prefetch.py NSE:NIFTY50-INDEX
+    python scripts/fyers_prefetch.py NSE:RELIANCE-EQ
 
   # Fetch option chain data (for /oi)
-  python /Users/iayusshh/claude/fyers_prefetch.py NSE:NIFTY50-INDEX --oi
-  python /Users/iayusshh/claude/fyers_prefetch.py NSE:NIFTYBANK-INDEX --oi
+    python scripts/fyers_prefetch.py NSE:NIFTY50-INDEX --oi
+    python scripts/fyers_prefetch.py NSE:NIFTYBANK-INDEX --oi
 
   # Fetch both price + option chain in one go
-  python /Users/iayusshh/claude/fyers_prefetch.py NSE:NIFTY50-INDEX --all
+    python scripts/fyers_prefetch.py NSE:NIFTY50-INDEX --all
 
-Data is saved to /Users/iayusshh/claude/fyers_data/<symbol>/
+Data is saved to the directory set by FYERS_DATA_DIR (defaults to ../data).
 """
 
 import sys
@@ -24,8 +24,10 @@ import json
 import os
 from datetime import datetime, timedelta
 
-CONFIG_PATH = os.environ.get("FYERS_CONFIG_PATH", "/Users/iayusshh/claude/fyers_config.json")
-DATA_DIR = os.environ.get("FYERS_DATA_DIR", "/Users/iayusshh/claude/fyers_data")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+CONFIG_PATH = os.environ.get("FYERS_CONFIG_PATH", os.path.join(SCRIPT_DIR, "fyers_config.json"))
+DATA_DIR = os.environ.get("FYERS_DATA_DIR", os.path.join(PROJECT_ROOT, "data"))
 
 
 def load_config():
@@ -48,7 +50,7 @@ def get_client(config):
     # Access token may come directly from config (env var path) or from token file
     access_token = config.get("access_token")
     if not access_token:
-        token_path = config.get("token_path", "/Users/iayusshh/claude/fyers_token.json")
+        token_path = config.get("token_path", os.environ.get("FYERS_TOKEN_PATH", "/tmp/fyers_token.json"))
         if not os.path.exists(token_path):
             print("ERROR: No token found. Run: python fyers_helper.py auth && python fyers_helper.py token <code>")
             sys.exit(1)

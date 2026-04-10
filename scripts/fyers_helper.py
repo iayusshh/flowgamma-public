@@ -17,7 +17,8 @@ import json
 import os
 from datetime import datetime, timedelta
 
-CONFIG_PATH = "/Users/iayusshh/claude/fyers_config.json"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+CONFIG_PATH = os.environ.get("FYERS_CONFIG_PATH", os.path.join(SCRIPT_DIR, "fyers_config.json"))
 
 
 def load_config():
