@@ -38,7 +38,7 @@ React frontend -> FastAPI backend -> PostgreSQL -> FYERS data ingestion -> Signa
 
 ## Screenshot
 
-<!-- Add dashboard screenshot here -->
+![FlowGamma Dashboard](./assets/flowgamma-dashboard.png)
 
 ## Contributing
 
