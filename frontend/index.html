@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1220'/%3E%3Cpath d='M14 42h36' stroke='%2322d3ee' stroke-width='4'/%3E%3Cpath d='M14 34l10-8 8 6 18-14' stroke='%2310b981' stroke-width='4' fill='none'/%3E%3C/svg%3E" />
+    <title>FlowGamma Analyzer</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+    <script>
+      (function () {
+        const dot  = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        let rx = 0, ry = 0; // ring position (lagged)
+        let mx = 0, my = 0; // mouse position
+
+        document.addEventListener('mousemove', (e) => {
+          mx = e.clientX; my = e.clientY;
+          dot.style.left = mx + 'px';
+          dot.style.top  = my + 'px';
+        });
+
+        // Ring follows mouse with smooth lag
+        function animateRing() {
+          rx += (mx - rx) * 0.18;
+          ry += (my - ry) * 0.18;
+          ring.style.left = rx + 'px';
+          ring.style.top  = ry + 'px';
+          requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        // Expand dot + ring on hover over interactive elements
+        document.addEventListener('mouseover', (e) => {
+          const el = e.target.closest('button, a, [role="button"], input, select, textarea, label, [tabindex]');
+          if (el) {
+            dot.style.width = '10px';
+            dot.style.height = '10px';
+            dot.style.background = '#7dd3fc';
+            dot.style.boxShadow = '0 0 10px 3px rgba(125,211,252,0.8)';
+            ring.style.width = '44px';
+            ring.style.height = '44px';
+            ring.style.borderColor = 'rgba(56,189,248,0.8)';
+          }
+        });
+        document.addEventListener('mouseout', (e) => {
+          const el = e.target.closest('button, a, [role="button"], input, select, textarea, label, [tabindex]');
+          if (el) {
+            dot.style.width = '6px';
+            dot.style.height = '6px';
+            dot.style.background = '#38bdf8';
+            dot.style.boxShadow = '0 0 6px 1px rgba(56,189,248,0.7)';
+            ring.style.width = '28px';
+            ring.style.height = '28px';
+            ring.style.borderColor = 'rgba(56,189,248,0.5)';
+          }
+        });
+
+        // Hide when leaving window
+        document.addEventListener('mouseleave', () => {
+          dot.style.opacity = '0'; ring.style.opacity = '0';
+        });
+        document.addEventListener('mouseenter', () => {
+          dot.style.opacity = '1'; ring.style.opacity = '1';
+        });
+      })();
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

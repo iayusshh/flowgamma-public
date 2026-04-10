@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    @apply bg-bg text-slate-200 font-mono antialiased;
+    font-size: 13px;
+  }
+
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: #0d1117; }
+  ::-webkit-scrollbar-thumb { background: #1e2d3d; border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2d3f52; }
+}
+
+/* Hide TradingView attribution logo */
+.tv-lightweight-charts a,
+a[href*="tradingview.com"] {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* ── Keyframe animations ─────────────────────────────────────────────────── */
+@keyframes gex-bar-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flash-update {
+  0%   { background-color: transparent; }
+  25%  { background-color: rgba(59, 130, 246, 0.12); }
+  100% { background-color: transparent; }
+}
+
+@keyframes pulse-value {
+  0%   { opacity: 1; }
+  40%  { opacity: 0.55; }
+  100% { opacity: 1; }
+}
+
+.animate-fade-up   { animation: fade-up 0.35s ease-out both; }
+.animate-flash     { animation: flash-update 0.6s ease-out both; }
+.animate-pulse-val { animation: pulse-value 0.5s ease-in-out; }
+
+/* ── Custom cursor with motion trail ─────────────────────────────────────── */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  background: #38bdf8;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s, height 0.15s, background 0.15s, opacity 0.15s;
+  box-shadow: 0 0 6px 1px rgba(56,189,248,0.7);
+}
+
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 28px; height: 28px;
+  border: 1.5px solid rgba(56,189,248,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.08s ease-out, width 0.2s, height 0.2s, border-color 0.2s, opacity 0.2s;
+}
+
+/* Expand ring on interactive elements */
+a:hover ~ #cursor-ring,
+button:hover ~ #cursor-ring,
+[role="button"]:hover ~ #cursor-ring {
+  width: 44px; height: 44px;
+}
+
+@layer components {
+  .panel {
+    @apply bg-panel border border-[#1e2d3d] rounded-lg overflow-hidden;
+  }
+  .panel-header {
+    @apply flex items-center justify-between px-3 py-2 border-b border-[#1e2d3d];
+  }
+  .panel-label {
+    @apply text-[10px] text-slate-500 uppercase tracking-widest;
+  }
+  .info-btn {
+    @apply text-[10px] text-blue-500 hover:text-blue-400 transition-colors cursor-pointer select-none;
+  }
+  .inference-box {
+    @apply border border-[#1e2d3d] rounded p-2.5 bg-bg text-[10px] text-slate-500 space-y-1.5;
+  }
+  .code-block {
+    @apply font-mono bg-[#0d1117] rounded p-2 space-y-0.5 text-[10px] leading-relaxed;
+  }
+  .chip {
+    @apply px-2 py-0.5 rounded border font-mono text-[10px];
+  }
+}
